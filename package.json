@@ -1,0 +1,43 @@
+{
+  "name": "sfrmobile-api",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "types/index.d.ts",
+  "license": "ISC",
+  "homepage": "https://github.com/maelgangloff/sfrmobile-api#readme",
+  "bugs": {
+    "url": "https://github.com/maelgangloff/sfrmobile-api/issues",
+    "email": "contact@maelgangloff.fr"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maelgangloff/sfrmobile-api.git"
+  },
+  "keywords": [
+    "SFR",
+    "RED",
+    "Mobile",
+    "Data",
+    "Phone",
+    "Giga"
+  ],
+  "description": "Client de l'API mobile SFR/RED",
+  "author": {
+    "name": "Maël Gangloff",
+    "email": "contact@maelgangloff.fr"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.17",
+    "@types/qs": "^6.9.7",
+    "jsdoc-to-markdown": "^7.1.1",
+    "ts-standard": "^11.0.0",
+    "typescript": "^4.5.5"
+  },
+  "dependencies": {
+    "axios": "^0.25.0"
+  },
+  "scripts": {
+    "lint": "ts-standard src/",
+    "build": "tsc && jsdoc2md -f ./dist/index.js > README.md"
+  }
+}
