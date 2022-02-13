@@ -163,7 +163,7 @@ Détails de l'offre d'une ligne
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | line | <code>string</code> |  | MSISDN de la ligne à sélectionner |
-| universe | <code>string</code> |  | SFR/RED |
+| universe | <code>Universe</code> |  | SFR/RED |
 | environment | <code>string</code> | <code>&quot;MOBILE&quot;</code> | Environnement de l'utilisateur (MOBILE) |
 
 <a name="SfrMobile+getPaiementTiersAchatsAbonnements"></a>

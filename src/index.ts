@@ -187,7 +187,7 @@ export class SfrMobile {
   /**
    * Détails de l'offre d'une ligne
    * @param {string} line MSISDN de la ligne à sélectionner
-   * @param {string} universe SFR/RED
+   * @param {Universe} universe SFR/RED
    * @param {string} environment Environnement de l'utilisateur (MOBILE)
    */
   public async getParc (line: string, universe: Universe = Universe.SFR, environment: string = 'MOBILE'): Promise<Parc> {
