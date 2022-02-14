@@ -16,6 +16,7 @@ Support non-officiel de l'API mobile de SFR/RED.Les identifiants utilisés sont
         * [.getInfosPersonnelles(line)](#SfrMobile+getInfosPersonnelles)
         * [.getNotifications()](#SfrMobile+getNotifications)
         * [.getEquipements(line, universe)](#SfrMobile+getEquipements)
+        * [.getOptionDetail(line, universe, environment, option)](#SfrMobile+getOptionDetail)
         * [.getOptionsCatalog(line)](#SfrMobile+getOptionsCatalog)
         * [.getOptions(line, category)](#SfrMobile+getOptions)
         * [.getEquipementDetail(line, optionCode, universe)](#SfrMobile+getEquipementDetail)
@@ -115,7 +116,21 @@ Liste des équipements mis à disposition pour une ligne
 | Param | Type | Description |
 | --- | --- | --- |
 | line | <code>string</code> | MSISDN de la ligne à sélectionner |
-| universe | <code>Universe</code> | SFR/RED |
+| universe | <code>Universe</code> \| <code>string</code> | SFR/RED |
+
+<a name="SfrMobile+getOptionDetail"></a>
+
+### sfrMobile.getOptionDetail(line, universe, environment, option)
+Détail d'une option souscrite
+
+**Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| line | <code>string</code> | MSISDN de la ligne à sélectionner |
+| universe | <code>Universe</code> \| <code>string</code> | SFR/RED |
+| environment | <code>Environment</code> \| <code>string</code> | Type de ligne |
+| option | <code>string</code> | Identifiant de l'option |
 
 <a name="SfrMobile+getOptionsCatalog"></a>
 
@@ -151,7 +166,7 @@ Obtenir la description complète de l'équipement
 | --- | --- | --- |
 | line | <code>string</code> | MSISDN de la ligne à sélectionner |
 | optionCode | <code>string</code> | Identifiant de l'option d'équipement |
-| universe | <code>string</code> | SFR/RED |
+| universe | <code>Universe</code> \| <code>string</code> | SFR/RED |
 
 <a name="SfrMobile+getParc"></a>
 
@@ -160,11 +175,11 @@ Détails de l'offre d'une ligne
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
 
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| line | <code>string</code> |  | MSISDN de la ligne à sélectionner |
-| universe | <code>Universe</code> |  | SFR/RED |
-| environment | <code>string</code> | <code>&quot;MOBILE&quot;</code> | Environnement de l'utilisateur (MOBILE) |
+| Param | Type | Description |
+| --- | --- | --- |
+| line | <code>string</code> | MSISDN de la ligne à sélectionner |
+| universe | <code>Universe</code> \| <code>string</code> | SFR/RED |
+| environment | <code>Environment</code> \| <code>string</code> | Type de ligne |
 
 <a name="SfrMobile+getPaiementTiersAchatsAbonnements"></a>
 

@@ -12,10 +12,16 @@ import { Parc } from './entities/Parc'
 import { Notifications } from './entities/Notifications'
 import { AchatsAbonnements } from './entities/AchatsAbonnements'
 import { OptionsAchat } from './entities/OptionsAchat'
+import { OptionDetail } from './entities/OptionDetail'
 
 export enum Universe {
   SFR = 'SFR',
   RED = 'RED'
+}
+
+export enum Environment {
+  MOBILE = 'MOBILE',
+  FIXE = 'FIXE'
 }
 
 /**
@@ -139,12 +145,26 @@ export class SfrMobile {
   /**
    * Liste des équipements mis à disposition pour une ligne
    * @param {string} line MSISDN de la ligne à sélectionner
-   * @param {Universe} universe SFR/RED
+   * @param {Universe|string} universe SFR/RED
    */
-  public async getEquipements (line: string, universe: Universe = Universe.SFR): Promise<Equipement> {
+  public async getEquipements (line: string, universe: Universe|string = Universe.SFR): Promise<Equipement> {
     return (await this.instance({
       url: 'https://www.sfr.fr/webservices/parc/v1/APPLI_MOBILE/equipement',
       params: { line, universe }
+    })).data
+  }
+
+  /**
+ * Détail d'une option souscrite
+ * @param {string} line MSISDN de la ligne à sélectionner
+ * @param {Universe|string} universe SFR/RED
+ * @param {Environment|string} environment Type de ligne
+ * @param {string} option Identifiant de l'option
+ */
+  public async getOptionDetail (line: string, universe: Universe|string, environment: Environment|string, option: string): Promise<OptionDetail> {
+    return (await this.instance({
+      url: `https://www.sfr.fr/webservices/parc/v1/APPLI_MOBILE/option/${option}`,
+      params: { line, environment, universe }
     })).data
   }
 
@@ -175,9 +195,9 @@ export class SfrMobile {
    * Obtenir la description complète de l'équipement
    * @param {string} line MSISDN de la ligne à sélectionner
    * @param {string} optionCode Identifiant de l'option d'équipement
-   * @param {string} universe SFR/RED
+   * @param {Universe|string} universe SFR/RED
    */
-  public async getEquipementDetail (line: string, optionCode: string, universe: Universe = Universe.SFR): Promise<EquipementDetail> {
+  public async getEquipementDetail (line: string, optionCode: string, universe: Universe|string = Universe.SFR): Promise<EquipementDetail> {
     return (await this.instance({
       url: `https://www.sfr.fr/webservices/options/v1/APPLI_MOBILE/equipement/${optionCode}`,
       params: { line, optionCode, universe }
@@ -187,10 +207,10 @@ export class SfrMobile {
   /**
    * Détails de l'offre d'une ligne
    * @param {string} line MSISDN de la ligne à sélectionner
-   * @param {Universe} universe SFR/RED
-   * @param {string} environment Environnement de l'utilisateur (MOBILE)
+   * @param {Universe|string} universe SFR/RED
+   * @param {Environment|string} environment Type de ligne
    */
-  public async getParc (line: string, universe: Universe = Universe.SFR, environment: string = 'MOBILE'): Promise<Parc> {
+  public async getParc (line: string, universe: Universe|string = Universe.SFR, environment: Environment|string = Environment.MOBILE): Promise<Parc> {
     return (await this.instance({
       url: 'https://www.sfr.fr/webservices/parc/v1/APPLI_MOBILE/parc',
       params: { line, environment, universe }
@@ -225,6 +245,7 @@ export class SfrMobile {
  */
   public async postPaiementTiersOptionsAchat (selectedLine: string, otp: string, data: OptionsAchat): Promise<any> {
     return (await this.instance({
+      method: 'POST',
       url: 'https://selfcare-webservices.sfr.fr/webservices/paiement-tiers/services/rest/smartphones/2.0/options-achat/modification',
       params: { platform: 'smartphones', selectedLine, typeActe: 'optionsAchats' },
       headers: {
