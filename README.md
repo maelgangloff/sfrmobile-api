@@ -18,6 +18,7 @@ Support non-officiel de l'API mobile de SFR/RED.Les identifiants utilisés sont
         * [.getEquipements(line, universe)](#SfrMobile+getEquipements)
         * [.getOptionDetail(line, universe, environment, option)](#SfrMobile+getOptionDetail)
         * [.getOptionsCatalog(line)](#SfrMobile+getOptionsCatalog)
+        * [.getOptionsCatalogDetail(line)](#SfrMobile+getOptionsCatalogDetail)
         * [.getOptions(line, category)](#SfrMobile+getOptions)
         * [.getEquipementDetail(line, optionCode, universe)](#SfrMobile+getEquipementDetail)
         * [.getParc(line, universe, environment)](#SfrMobile+getParc)
@@ -135,7 +136,18 @@ Détail d'une option souscrite
 <a name="SfrMobile+getOptionsCatalog"></a>
 
 ### sfrMobile.getOptionsCatalog(line)
-Catalogue des catégories d'options
+Catalogue des catégories d'options disponibles pour une ligne
+
+**Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| line | <code>string</code> | MSISDN de la ligne à sélectionner |
+
+<a name="SfrMobile+getOptionsCatalogDetail"></a>
+
+### sfrMobile.getOptionsCatalogDetail(line)
+Catalogue détaillé des catégories d'options disponibles pour une ligne
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
 

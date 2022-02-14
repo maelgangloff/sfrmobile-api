@@ -13,6 +13,7 @@ import { Notifications } from './entities/Notifications'
 import { AchatsAbonnements } from './entities/AchatsAbonnements'
 import { OptionsAchat } from './entities/OptionsAchat'
 import { OptionDetail } from './entities/OptionDetail'
+import { OptionsCatalogDetail } from './entities/OptionsCatalogDetail'
 
 export enum Universe {
   SFR = 'SFR',
@@ -21,7 +22,8 @@ export enum Universe {
 
 export enum Environment {
   MOBILE = 'MOBILE',
-  FIXE = 'FIXE'
+  FIXE = 'FIXE',
+  BOTH = 'BOTH'
 }
 
 /**
@@ -169,12 +171,23 @@ export class SfrMobile {
   }
 
   /**
-   * Catalogue des catégories d'options
+   * Catalogue des catégories d'options disponibles pour une ligne
    * @param {string} line MSISDN de la ligne à sélectionner
    */
   public async getOptionsCatalog (line: string): Promise<OptionsCatalog> {
     return (await this.instance({
       url: 'https://www.sfr.fr/webservices/options/v1/APPLI_MOBILE/catalog',
+      params: { line }
+    })).data
+  }
+
+  /**
+ * Catalogue détaillé des catégories d'options disponibles pour une ligne
+ * @param {string} line MSISDN de la ligne à sélectionner
+ */
+  public async getOptionsCatalogDetail (line: string): Promise<OptionsCatalogDetail> {
+    return (await this.instance({
+      url: 'https://www.sfr.fr/webservices/options/v1/APPLI_MOBILE/catalog/details',
       params: { line }
     })).data
   }
