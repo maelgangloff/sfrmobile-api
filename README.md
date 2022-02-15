@@ -12,6 +12,8 @@ Support non-officiel de l'API mobile de SFR/RED.Les identifiants utilisés sont
         * [.getConsoNationale(line)](#SfrMobile+getConsoNationale)
         * [.getFacturationMobile(line, duration)](#SfrMobile+getFacturationMobile) ⇒ <code>Promise.&lt;Facturation&gt;</code>
         * [.downloadFactureMobile(line, numeroFacture, fadet)](#SfrMobile+downloadFactureMobile) ⇒ <code>Promise.&lt;Stream&gt;</code>
+        * [.getFacturationFixe(line, duration)](#SfrMobile+getFacturationFixe) ⇒ <code>Promise.&lt;FacturationFixe&gt;</code>
+        * [.downloadFactureFixe(line, idFact)](#SfrMobile+downloadFactureFixe) ⇒ <code>Promise.&lt;Stream&gt;</code>
         * [.getFicheMonCompte()](#SfrMobile+getFicheMonCompte) ⇒ <code>Promise.&lt;FicheMonCompte&gt;</code>
         * [.getDashboard(line)](#SfrMobile+getDashboard) ⇒ <code>Promise.&lt;Dashboard&gt;</code>
         * [.getInfosPersonnelles(line)](#SfrMobile+getInfosPersonnelles) ⇒ <code>Promise.&lt;InfoPersonnelles&gt;</code>
@@ -26,7 +28,8 @@ Support non-officiel de l'API mobile de SFR/RED.Les identifiants utilisés sont
         * [.getPaiementTiersAchatsAbonnements(line)](#SfrMobile+getPaiementTiersAchatsAbonnements) ⇒ <code>Promise.&lt;AchatsAbonnements&gt;</code>
         * [.getPaiementTiersOptionsAchat(line)](#SfrMobile+getPaiementTiersOptionsAchat) ⇒ <code>Promise.&lt;OptionsAchat&gt;</code>
         * [.postPaiementTiersOptionsAchat(selectedLine, otp, data)](#SfrMobile+postPaiementTiersOptionsAchat)
-        * [.getOTPSMS(line)](#SfrMobile+getOTPSMS) ⇒ <code>Promise.&lt;{codeRetour: number, secured: boolean, line: string}&gt;</code>
+        * [.getOTPSMS(line)](#SfrMobile+getOTPSMS) ⇒ <code>Promise.&lt;OTPSMSResponse&gt;</code>
+        * [.getOffreAME(line)](#SfrMobile+getOffreAME) ⇒ <code>Promise.&lt;OffreAmes&gt;</code>
     * _static_
         * [.login(username, password, duration, universe)](#SfrMobile.login) ⇒ <code>Promise.&lt;LoginResponse&gt;</code>
         * [.verifyUsername(username, universe)](#SfrMobile.verifyUsername) ⇒ <code>Promise.&lt;VerifyUsernameResponse&gt;</code>
@@ -85,13 +88,37 @@ Télécharger la facture d'une ligne mobile
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | line | <code>string</code> |  | MSISDN de la ligne mobile à sélectionner |
-| numeroFacture | <code>string</code> |  | Identifiant de facturation de la ligne mobile |
+| numeroFacture | <code>string</code> |  | Identifiant de la facture de la ligne mobile |
 | fadet | <code>boolean</code> | <code>false</code> | Facture détaillée |
+
+<a name="SfrMobile+getFacturationFixe"></a>
+
+### sfrMobile.getFacturationFixe(line, duration) ⇒ <code>Promise.&lt;FacturationFixe&gt;</code>
+Historique de facturation d'une ligne fixe
+
+**Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| line | <code>string</code> |  | MSISDN de la ligne fixe |
+| duration | <code>number</code> | <code>6</code> | Nombre de périodes de facturation (6,12,18,24) |
+
+<a name="SfrMobile+downloadFactureFixe"></a>
+
+### sfrMobile.downloadFactureFixe(line, idFact) ⇒ <code>Promise.&lt;Stream&gt;</code>
+Télécharger la facture d'une ligne fixe
+
+**Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| line | <code>string</code> | MSISDN de la ligne fixe |
+| idFact | <code>string</code> | Identifiant de la facture de la ligne fixe |
 
 <a name="SfrMobile+getFicheMonCompte"></a>
 
 ### sfrMobile.getFicheMonCompte() ⇒ <code>Promise.&lt;FicheMonCompte&gt;</code>
-Fiche descriptive du compte de l'utilisateur courrant
+Fiche descriptive du compte de l'utilisateur courant
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
 <a name="SfrMobile+getDashboard"></a>
@@ -245,8 +272,19 @@ Mettre à jour les droits d'achat sur la ligne
 
 <a name="SfrMobile+getOTPSMS"></a>
 
-### sfrMobile.getOTPSMS(line) ⇒ <code>Promise.&lt;{codeRetour: number, secured: boolean, line: string}&gt;</code>
+### sfrMobile.getOTPSMS(line) ⇒ <code>Promise.&lt;OTPSMSResponse&gt;</code>
 Obtenir un code à usage unique pour effectuer une opération
+
+**Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
+
+| Param | Description |
+| --- | --- |
+| line | MSISDN de la ligne à sélectionner |
+
+<a name="SfrMobile+getOffreAME"></a>
+
+### sfrMobile.getOffreAME(line) ⇒ <code>Promise.&lt;OffreAmes&gt;</code>
+Informations sur les remises Multi-Pack
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
 

@@ -16,6 +16,9 @@ import { OptionDetail } from './entities/OptionDetail'
 import { OptionsCatalogDetail } from './entities/OptionsCatalogDetail'
 import { Stream } from 'stream'
 import { VerifyUsernameResponse } from './entities/VerifyUsernameResponse'
+import { OTPSMSResponse } from './entities/OTPSMSResponse'
+import { OffreAmes } from './entities/OffreAmes'
+import { FacturationFixe } from './entities/FacturationFixe'
 
 export enum Universe {
   SFR = 'SFR',
@@ -110,11 +113,11 @@ export class SfrMobile {
   }
 
   /**
- * Historique de facturation d'une ligne mobile
- * @param {string} line MSISDN de la ligne mobile à sélectionner
- * @param {number} duration Nombre de périodes de facturation (6,12,18,24)
- * @return {Promise<Facturation>}
- */
+   * Historique de facturation d'une ligne mobile
+   * @param {string} line MSISDN de la ligne mobile à sélectionner
+   * @param {number} duration Nombre de périodes de facturation (6,12,18,24)
+   * @return {Promise<Facturation>}
+   */
   public async getFacturationMobile (line: string, duration: 6|12|18|24 = 6): Promise<Facturation> {
     return (await this.instance({
       url: `https://selfcare-webservices.sfr.fr/facture-mobile-ws/consultation/smartphones/2.5/${line}`,
@@ -123,12 +126,12 @@ export class SfrMobile {
   }
 
   /**
- * Télécharger la facture d'une ligne mobile
- * @param {string} line MSISDN de la ligne mobile à sélectionner
- * @param {string} numeroFacture Identifiant de facturation de la ligne mobile
- * @param {boolean} fadet Facture détaillée
- * @return {Promise<Stream>}
- */
+   * Télécharger la facture d'une ligne mobile
+   * @param {string} line MSISDN de la ligne mobile à sélectionner
+   * @param {string} numeroFacture Identifiant de la facture de la ligne mobile
+   * @param {boolean} fadet Facture détaillée
+   * @return {Promise<Stream>}
+   */
   public async downloadFactureMobile (line: string, numeroFacture: string, fadet: boolean = false): Promise<Stream> {
     return (await this.instance({
       url: `https://selfcare-webservices.sfr.fr/facture-mobile-ws/consultation/smartphones/2.5/${line}/sfr-facture${fadet ? '-detail-' : '-'}${numeroFacture}.pdf`,
@@ -137,7 +140,34 @@ export class SfrMobile {
   }
 
   /**
-   * Fiche descriptive du compte de l'utilisateur courrant
+ * Historique de facturation d'une ligne fixe
+ * @param {string} line MSISDN de la ligne fixe
+ * @param {number} duration Nombre de périodes de facturation (6,12,18,24)
+ * @returns {Promise<FacturationFixe>}
+ */
+  public async getFacturationFixe (line: string, duration: 6|12|18|24 = 6): Promise<FacturationFixe> {
+    return (await this.instance({
+      url: `https://selfcare-webservices.sfr.fr/services/facture-fixe-md/consulterfactures/${line}`,
+      params: { duration }
+    })).data
+  }
+
+  /**
+   * Télécharger la facture d'une ligne fixe
+   * @param {string} line MSISDN de la ligne fixe
+   * @param {string} idFact Identifiant de la facture de la ligne fixe
+   * @return {Promise<Stream>}
+   */
+  public async downloadFactureFixe (line: string, idFact: string): Promise<Stream> {
+    return (await this.instance({
+      url: `https://espace-client.sfr.fr/webservices/infosclientfixe/services/rest/1.0/facture/${line}`,
+      params: { idFact },
+      responseType: 'stream'
+    })).data
+  }
+
+  /**
+   * Fiche descriptive du compte de l'utilisateur courant
    * @return {Promise<FicheMonCompte>}
    */
   public async getFicheMonCompte (): Promise<FicheMonCompte> {
@@ -171,9 +201,9 @@ export class SfrMobile {
   }
 
   /**
- * Notifications de l'utilisateur courant
- * @return {Promise<Notifications>}
- */
+   * Notifications de l'utilisateur courant
+  * @return {Promise<Notifications>}
+  */
   public async getNotifications (): Promise<Notifications> {
     return (await this.instance({
       url: 'https://espace-client.sfr.fr/espace-client-mid/notification/1.0/count',
@@ -195,13 +225,13 @@ export class SfrMobile {
   }
 
   /**
- * Détail d'une option souscrite
- * @param {string} line MSISDN de la ligne à sélectionner
- * @param {Universe|string} universe SFR/RED
- * @param {Environment|string} environment Type de ligne
- * @param {string} option Identifiant de l'option
- * @return {Promise<OptionDetail>}
- */
+   * Détail d'une option souscrite
+   * @param {string} line MSISDN de la ligne à sélectionner
+   * @param {Universe|string} universe SFR/RED
+   * @param {Environment|string} environment Type de ligne
+   * @param {string} option Identifiant de l'option
+   * @return {Promise<OptionDetail>}
+   */
   public async getOptionDetail (line: string, universe: Universe|string, environment: Environment|string, option: string): Promise<OptionDetail> {
     return (await this.instance({
       url: `https://www.sfr.fr/webservices/parc/v1/APPLI_MOBILE/option/${option}`,
@@ -222,10 +252,10 @@ export class SfrMobile {
   }
 
   /**
- * Catalogue détaillé des catégories d'options disponibles pour une ligne
- * @param {string} line MSISDN de la ligne à sélectionner
- * @return {Promise<OptionsCatalogDetail>}
- */
+   * Catalogue détaillé des catégories d'options disponibles pour une ligne
+   * @param {string} line MSISDN de la ligne à sélectionner
+   * @return {Promise<OptionsCatalogDetail>}
+   */
   public async getOptionsCatalogDetail (line: string): Promise<OptionsCatalogDetail> {
     return (await this.instance({
       url: 'https://www.sfr.fr/webservices/options/v1/APPLI_MOBILE/catalog/details',
@@ -297,11 +327,11 @@ export class SfrMobile {
   }
 
   /**
- * Mettre à jour les droits d'achat sur la ligne
- * @param {string} selectedLine MSISDN de la ligne à sélectionner
- * @param {string} otp Code à usage unique obtenu avec getOTPSMS()
- * @param {OptionsAchat} data Droits d'achats à permuter
- */
+   * Mettre à jour les droits d'achat sur la ligne
+   * @param {string} selectedLine MSISDN de la ligne à sélectionner
+   * @param {string} otp Code à usage unique obtenu avec getOTPSMS()
+   * @param {OptionsAchat} data Droits d'achats à permuter
+   */
   public async postPaiementTiersOptionsAchat (selectedLine: string, otp: string, data: OptionsAchat): Promise<any> {
     return (await this.instance({
       method: 'POST',
@@ -318,11 +348,23 @@ export class SfrMobile {
   /**
    * Obtenir un code à usage unique pour effectuer une opération
    * @param line MSISDN de la ligne à sélectionner
-   * @return {Promise<{codeRetour: number, secured: boolean, line: string}>}
+   * @return {Promise<OTPSMSResponse>}
    */
-  public async getOTPSMS (line: string): Promise<{codeRetour: number, secured: boolean, line: string}> {
+  public async getOTPSMS (line: string): Promise<OTPSMSResponse> {
     return (await this.instance({
       url: `https://espace-client.sfr.fr/services-securite/rest/1.0/checkUrl/${line}`
+    })).data
+  }
+
+  /**
+ * Informations sur les remises Multi-Pack
+ * @param line MSISDN de la ligne à sélectionner
+ * @returns {Promise<OffreAmes>}
+ */
+  public async getOffreAME (line: string): Promise<OffreAmes> {
+    return (await this.instance({
+      url: 'https://www.sfr.fr/webservices/selfcare/offre-ws/rest/public/v41/ames',
+      params: { ligne: line }
     })).data
   }
 }
