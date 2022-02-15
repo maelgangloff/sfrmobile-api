@@ -8,26 +8,28 @@ Support non-officiel de l'API mobile de SFR/RED.Les identifiants utilisés sont
 * [SfrMobile](#SfrMobile)
     * [new SfrMobile(casauthenticationtoken)](#new_SfrMobile_new)
     * _instance_
-        * [.getConso(line)](#SfrMobile+getConso)
+        * [.getConso(line)](#SfrMobile+getConso) ⇒ <code>Promise.&lt;Consumption&gt;</code>
         * [.getConsoNationale(line)](#SfrMobile+getConsoNationale)
-        * [.getFacturation(line, duration)](#SfrMobile+getFacturation)
-        * [.getFicheMonCompte()](#SfrMobile+getFicheMonCompte)
-        * [.getDashboard(line)](#SfrMobile+getDashboard)
-        * [.getInfosPersonnelles(line)](#SfrMobile+getInfosPersonnelles)
-        * [.getNotifications()](#SfrMobile+getNotifications)
-        * [.getEquipements(line, universe)](#SfrMobile+getEquipements)
-        * [.getOptionDetail(line, universe, environment, option)](#SfrMobile+getOptionDetail)
-        * [.getOptionsCatalog(line)](#SfrMobile+getOptionsCatalog)
-        * [.getOptionsCatalogDetail(line)](#SfrMobile+getOptionsCatalogDetail)
-        * [.getOptions(line, category)](#SfrMobile+getOptions)
-        * [.getEquipementDetail(line, optionCode, universe)](#SfrMobile+getEquipementDetail)
-        * [.getParc(line, universe, environment)](#SfrMobile+getParc)
-        * [.getPaiementTiersAchatsAbonnements(line)](#SfrMobile+getPaiementTiersAchatsAbonnements)
-        * [.getPaiementTiersOptionsAchat(line)](#SfrMobile+getPaiementTiersOptionsAchat)
+        * [.getFacturationMobile(line, duration)](#SfrMobile+getFacturationMobile) ⇒ <code>Promise.&lt;Facturation&gt;</code>
+        * [.downloadFactureMobile(line, numeroFacture, fadet)](#SfrMobile+downloadFactureMobile) ⇒ <code>Promise.&lt;Stream&gt;</code>
+        * [.getFicheMonCompte()](#SfrMobile+getFicheMonCompte) ⇒ <code>Promise.&lt;FicheMonCompte&gt;</code>
+        * [.getDashboard(line)](#SfrMobile+getDashboard) ⇒ <code>Promise.&lt;Dashboard&gt;</code>
+        * [.getInfosPersonnelles(line)](#SfrMobile+getInfosPersonnelles) ⇒ <code>Promise.&lt;InfoPersonnelles&gt;</code>
+        * [.getNotifications()](#SfrMobile+getNotifications) ⇒ <code>Promise.&lt;Notifications&gt;</code>
+        * [.getEquipements(line, universe)](#SfrMobile+getEquipements) ⇒ <code>Promise.&lt;Equipement&gt;</code>
+        * [.getOptionDetail(line, universe, environment, option)](#SfrMobile+getOptionDetail) ⇒ <code>Promise.&lt;OptionDetail&gt;</code>
+        * [.getOptionsCatalog(line)](#SfrMobile+getOptionsCatalog) ⇒ <code>Promise.&lt;OptionsCatalog&gt;</code>
+        * [.getOptionsCatalogDetail(line)](#SfrMobile+getOptionsCatalogDetail) ⇒ <code>Promise.&lt;OptionsCatalogDetail&gt;</code>
+        * [.getOptions(line, category)](#SfrMobile+getOptions) ⇒ <code>Promise.&lt;OptionsList&gt;</code>
+        * [.getEquipementDetail(line, optionCode, universe)](#SfrMobile+getEquipementDetail) ⇒ <code>Promise.&lt;EquipementDetail&gt;</code>
+        * [.getParc(line, universe, environment)](#SfrMobile+getParc) ⇒ <code>Promise.&lt;Parc&gt;</code>
+        * [.getPaiementTiersAchatsAbonnements(line)](#SfrMobile+getPaiementTiersAchatsAbonnements) ⇒ <code>Promise.&lt;AchatsAbonnements&gt;</code>
+        * [.getPaiementTiersOptionsAchat(line)](#SfrMobile+getPaiementTiersOptionsAchat) ⇒ <code>Promise.&lt;OptionsAchat&gt;</code>
         * [.postPaiementTiersOptionsAchat(selectedLine, otp, data)](#SfrMobile+postPaiementTiersOptionsAchat)
-        * [.getOTPSMS(line)](#SfrMobile+getOTPSMS)
+        * [.getOTPSMS(line)](#SfrMobile+getOTPSMS) ⇒ <code>Promise.&lt;{codeRetour: number, secured: boolean, line: string}&gt;</code>
     * _static_
-        * [.login(username, password, duration)](#SfrMobile.login)
+        * [.login(username, password, duration, universe)](#SfrMobile.login) ⇒ <code>Promise.&lt;LoginResponse&gt;</code>
+        * [.verifyUsername(username, universe)](#SfrMobile.verifyUsername) ⇒ <code>Promise.&lt;VerifyUsernameResponse&gt;</code>
 
 <a name="new_SfrMobile_new"></a>
 
@@ -41,7 +43,7 @@ Support non-officiel de l'API mobile de SFR/RED.Les identifiants utilisés sont
 ```jsconst { SfrMobile } = require('sfrmobile-api')SfrMobile.login(username, password).then(({ token }) => {   const user = new SfrMobile(token)   // Votre code})```
 <a name="SfrMobile+getConso"></a>
 
-### sfrMobile.getConso(line)
+### sfrMobile.getConso(line) ⇒ <code>Promise.&lt;Consumption&gt;</code>
 Consommation générale de la ligne
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
@@ -61,27 +63,40 @@ Historique de la consommation sur le territoire national
 | --- | --- |
 | line | MSISDN de la ligne à sélectionner |
 
-<a name="SfrMobile+getFacturation"></a>
+<a name="SfrMobile+getFacturationMobile"></a>
 
-### sfrMobile.getFacturation(line, duration)
-Historique de facturation de la ligne
+### sfrMobile.getFacturationMobile(line, duration) ⇒ <code>Promise.&lt;Facturation&gt;</code>
+Historique de facturation d'une ligne mobile
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| line | <code>string</code> |  | MSISDN de la ligne à sélectionner |
+| line | <code>string</code> |  | MSISDN de la ligne mobile à sélectionner |
 | duration | <code>number</code> | <code>6</code> | Nombre de périodes de facturation (6,12,18,24) |
+
+<a name="SfrMobile+downloadFactureMobile"></a>
+
+### sfrMobile.downloadFactureMobile(line, numeroFacture, fadet) ⇒ <code>Promise.&lt;Stream&gt;</code>
+Télécharger la facture d'une ligne mobile
+
+**Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| line | <code>string</code> |  | MSISDN de la ligne mobile à sélectionner |
+| numeroFacture | <code>string</code> |  | Identifiant de facturation de la ligne mobile |
+| fadet | <code>boolean</code> | <code>false</code> | Facture détaillée |
 
 <a name="SfrMobile+getFicheMonCompte"></a>
 
-### sfrMobile.getFicheMonCompte()
+### sfrMobile.getFicheMonCompte() ⇒ <code>Promise.&lt;FicheMonCompte&gt;</code>
 Fiche descriptive du compte de l'utilisateur courrant
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
 <a name="SfrMobile+getDashboard"></a>
 
-### sfrMobile.getDashboard(line)
+### sfrMobile.getDashboard(line) ⇒ <code>Promise.&lt;Dashboard&gt;</code>
 Informations générales de la ligne
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
@@ -92,7 +107,7 @@ Informations générales de la ligne
 
 <a name="SfrMobile+getInfosPersonnelles"></a>
 
-### sfrMobile.getInfosPersonnelles(line)
+### sfrMobile.getInfosPersonnelles(line) ⇒ <code>Promise.&lt;InfoPersonnelles&gt;</code>
 Informations personnelles concernant la ligne
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
@@ -103,13 +118,13 @@ Informations personnelles concernant la ligne
 
 <a name="SfrMobile+getNotifications"></a>
 
-### sfrMobile.getNotifications()
+### sfrMobile.getNotifications() ⇒ <code>Promise.&lt;Notifications&gt;</code>
 Notifications de l'utilisateur courant
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
 <a name="SfrMobile+getEquipements"></a>
 
-### sfrMobile.getEquipements(line, universe)
+### sfrMobile.getEquipements(line, universe) ⇒ <code>Promise.&lt;Equipement&gt;</code>
 Liste des équipements mis à disposition pour une ligne
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
@@ -121,7 +136,7 @@ Liste des équipements mis à disposition pour une ligne
 
 <a name="SfrMobile+getOptionDetail"></a>
 
-### sfrMobile.getOptionDetail(line, universe, environment, option)
+### sfrMobile.getOptionDetail(line, universe, environment, option) ⇒ <code>Promise.&lt;OptionDetail&gt;</code>
 Détail d'une option souscrite
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
@@ -135,7 +150,7 @@ Détail d'une option souscrite
 
 <a name="SfrMobile+getOptionsCatalog"></a>
 
-### sfrMobile.getOptionsCatalog(line)
+### sfrMobile.getOptionsCatalog(line) ⇒ <code>Promise.&lt;OptionsCatalog&gt;</code>
 Catalogue des catégories d'options disponibles pour une ligne
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
@@ -146,7 +161,7 @@ Catalogue des catégories d'options disponibles pour une ligne
 
 <a name="SfrMobile+getOptionsCatalogDetail"></a>
 
-### sfrMobile.getOptionsCatalogDetail(line)
+### sfrMobile.getOptionsCatalogDetail(line) ⇒ <code>Promise.&lt;OptionsCatalogDetail&gt;</code>
 Catalogue détaillé des catégories d'options disponibles pour une ligne
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
@@ -157,7 +172,7 @@ Catalogue détaillé des catégories d'options disponibles pour une ligne
 
 <a name="SfrMobile+getOptions"></a>
 
-### sfrMobile.getOptions(line, category)
+### sfrMobile.getOptions(line, category) ⇒ <code>Promise.&lt;OptionsList&gt;</code>
 Lister les options disponibles dans une catégorie
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
@@ -169,7 +184,7 @@ Lister les options disponibles dans une catégorie
 
 <a name="SfrMobile+getEquipementDetail"></a>
 
-### sfrMobile.getEquipementDetail(line, optionCode, universe)
+### sfrMobile.getEquipementDetail(line, optionCode, universe) ⇒ <code>Promise.&lt;EquipementDetail&gt;</code>
 Obtenir la description complète de l'équipement
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
@@ -182,7 +197,7 @@ Obtenir la description complète de l'équipement
 
 <a name="SfrMobile+getParc"></a>
 
-### sfrMobile.getParc(line, universe, environment)
+### sfrMobile.getParc(line, universe, environment) ⇒ <code>Promise.&lt;Parc&gt;</code>
 Détails de l'offre d'une ligne
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
@@ -195,7 +210,7 @@ Détails de l'offre d'une ligne
 
 <a name="SfrMobile+getPaiementTiersAchatsAbonnements"></a>
 
-### sfrMobile.getPaiementTiersAchatsAbonnements(line)
+### sfrMobile.getPaiementTiersAchatsAbonnements(line) ⇒ <code>Promise.&lt;AchatsAbonnements&gt;</code>
 Liste des achats et abonnements (hors forfait) sur la ligne
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
@@ -206,7 +221,7 @@ Liste des achats et abonnements (hors forfait) sur la ligne
 
 <a name="SfrMobile+getPaiementTiersOptionsAchat"></a>
 
-### sfrMobile.getPaiementTiersOptionsAchat(line)
+### sfrMobile.getPaiementTiersOptionsAchat(line) ⇒ <code>Promise.&lt;OptionsAchat&gt;</code>
 Droits d'achat sur la ligne (Stores, jeux, ...)
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
@@ -230,7 +245,7 @@ Mettre à jour les droits d'achat sur la ligne
 
 <a name="SfrMobile+getOTPSMS"></a>
 
-### sfrMobile.getOTPSMS(line)
+### sfrMobile.getOTPSMS(line) ⇒ <code>Promise.&lt;{codeRetour: number, secured: boolean, line: string}&gt;</code>
 Obtenir un code à usage unique pour effectuer une opération
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
@@ -241,7 +256,7 @@ Obtenir un code à usage unique pour effectuer une opération
 
 <a name="SfrMobile.login"></a>
 
-### SfrMobile.login(username, password, duration)
+### SfrMobile.login(username, password, duration, universe) ⇒ <code>Promise.&lt;LoginResponse&gt;</code>
 Obtenir un jeton d'authentification auprès du CAS de SFR
 
 **Kind**: static method of [<code>SfrMobile</code>](#SfrMobile)  
@@ -251,4 +266,17 @@ Obtenir un jeton d'authentification auprès du CAS de SFR
 | username | <code>string</code> |  | Identifiant du compte |
 | password | <code>string</code> |  | Mot de passe du compte |
 | duration | <code>number</code> | <code>86400</code> | Durée de validité du jeton demandé en secondes |
+| universe | <code>Universe</code> |  | SFR/RED |
+
+<a name="SfrMobile.verifyUsername"></a>
+
+### SfrMobile.verifyUsername(username, universe) ⇒ <code>Promise.&lt;VerifyUsernameResponse&gt;</code>
+Tester la validité d'un nom d'utilisateur
+
+**Kind**: static method of [<code>SfrMobile</code>](#SfrMobile)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| username | <code>string</code> | Nom d'utilisateur à tester |
+| universe | <code>Universe</code> | SFR/RED |
 
