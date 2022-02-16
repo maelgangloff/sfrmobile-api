@@ -19,7 +19,8 @@ Les identifiants utilisés sont les mêmes que pour se connecter sur le site de 
         * [.getFicheMonCompte()](#SfrMobile+getFicheMonCompte) ⇒ <code>Promise.&lt;FicheMonCompte&gt;</code>
         * [.getDashboard(line)](#SfrMobile+getDashboard) ⇒ <code>Promise.&lt;Dashboard&gt;</code>
         * [.getInfosPersonnelles(line)](#SfrMobile+getInfosPersonnelles) ⇒ <code>Promise.&lt;InfoPersonnelles&gt;</code>
-        * [.getNotifications()](#SfrMobile+getNotifications) ⇒ <code>Promise.&lt;Notifications&gt;</code>
+        * [.getNotificationsCount()](#SfrMobile+getNotificationsCount) ⇒ <code>Promise.&lt;NotificationsCount&gt;</code>
+        * [.getNotifications()](#SfrMobile+getNotifications) ⇒ <code>Promise.&lt;{notifications: Array.&lt;Notification&gt;}&gt;</code>
         * [.getEquipements(line, universe)](#SfrMobile+getEquipements) ⇒ <code>Promise.&lt;Equipement&gt;</code>
         * [.getOptionDetail(line, universe, environment, option)](#SfrMobile+getOptionDetail) ⇒ <code>Promise.&lt;OptionDetail&gt;</code>
         * [.getOptionsCatalog(line)](#SfrMobile+getOptionsCatalog) ⇒ <code>Promise.&lt;OptionsCatalog&gt;</code>
@@ -166,10 +167,16 @@ Informations personnelles concernant la ligne
 | --- | --- |
 | line | MSISDN de la ligne à sélectionner |
 
+<a name="SfrMobile+getNotificationsCount"></a>
+
+### sfrMobile.getNotificationsCount() ⇒ <code>Promise.&lt;NotificationsCount&gt;</code>
+Nombre de notifications de l'utilisateur
+
+**Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
 <a name="SfrMobile+getNotifications"></a>
 
-### sfrMobile.getNotifications() ⇒ <code>Promise.&lt;Notifications&gt;</code>
-Notifications de l'utilisateur courant
+### sfrMobile.getNotifications() ⇒ <code>Promise.&lt;{notifications: Array.&lt;Notification&gt;}&gt;</code>
+Lister les notifications de l'utilisateur
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
 <a name="SfrMobile+getEquipements"></a>

@@ -9,7 +9,7 @@ import { LoginResponse } from './entities/LoginResponse'
 import { OptionsCatalog } from './entities/OptionsCatalog'
 import { OptionsList } from './entities/OptionsList'
 import { Parc } from './entities/Parc'
-import { Notifications } from './entities/Notifications'
+import { Notification, NotificationsCount } from './entities/Notifications'
 import { AchatsAbonnements } from './entities/AchatsAbonnements'
 import { OptionsAchat } from './entities/OptionsAchat'
 import { OptionDetail } from './entities/OptionDetail'
@@ -196,7 +196,7 @@ export class SfrMobile {
    */
   public async downloadFactureFixe (line: string, idFact: string): Promise<Stream> {
     return (await this.instance({
-      url: `https://espace-client.sfr.fr/webservices/infosclientfixe/services/rest/1.0/facture/${line}`,
+      url: `https://selfcare-webservices.sfr.fr/webservices/infosclientfixe/services/rest/1.0/facture/${line}`,
       params: { idFact },
       responseType: 'stream'
     })).data
@@ -209,7 +209,7 @@ export class SfrMobile {
    */
   public async getInfosClientFixe (line?: string): Promise<InfosClientFixe> {
     return (await this.instance({
-      url: `https://selfcare-webservices.sfr.fr/webservices/infosclientfixe/services/rest/1.0/${line ?? ''}`
+      url: `https://selfcare-webservices.sfr.fr/webservices/infosclientfixe/services/rest/1.0/infosclientfixe/${line ?? ''}`
     })).data
   }
 
@@ -248,12 +248,23 @@ export class SfrMobile {
   }
 
   /**
-   * Notifications de l'utilisateur courant
-  * @return {Promise<Notifications>}
+   * Nombre de notifications de l'utilisateur
+  * @return {Promise<NotificationsCount>}
   */
-  public async getNotifications (): Promise<Notifications> {
+  public async getNotificationsCount (): Promise<NotificationsCount> {
     return (await this.instance({
       url: 'https://espace-client.sfr.fr/espace-client-mid/notification/1.0/count',
+      params: { platform: 'smartphones' }
+    })).data
+  }
+
+  /**
+   * Lister les notifications de l'utilisateur
+   * @return {Promise<{notifications: Notification[]}>}
+   */
+  public async getNotifications (): Promise<{notifications: Notification[]}> {
+    return (await this.instance({
+      url: 'https://espace-client.sfr.fr/espace-client-mid/notification/1.0',
       params: { platform: 'smartphones' }
     })).data
   }
