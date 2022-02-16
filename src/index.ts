@@ -19,6 +19,9 @@ import { VerifyUsernameResponse } from './entities/VerifyUsernameResponse'
 import { OTPSMSResponse } from './entities/OTPSMSResponse'
 import { OffreAmes } from './entities/OffreAmes'
 import { FacturationFixe } from './entities/FacturationFixe'
+import { InfosClientFixe } from './entities/InfosClientFixe'
+import { InfosTerminalIMEI } from './entities/InfosTerminalIMEI'
+import { InfosTerminal } from './entities/InfosTerminal'
 
 export enum Universe {
   SFR = 'SFR',
@@ -88,6 +91,39 @@ export class SfrMobile {
   public static async verifyUsername (username: string, universe: Universe = Universe.SFR): Promise<VerifyUsernameResponse> {
     return (await axios.get(`https://selfcare-webservices.sfr.fr/securite-compte-mid/login/smartphones/2.0/verification/${username}`, {
       auth: universe === Universe.SFR ? { username: 'SFRETMoiAndroidV1', password: 'windows1980' } : { username: 'REDETMoiAndroidV1', password: 'android2019' }
+    })).data
+  }
+
+  /**
+   * Description du terminal associé à un IMEI
+   * @param {string} imei Identifiant du terminal mobile
+   * @returns {Promise<InfosTerminalIMEI>}
+   */
+  public static async getTerminalInfoIMEI (imei: string): Promise<InfosTerminalIMEI> {
+    return (await axios.get(`https://selfcare-webservices.sfr.fr/webservices/infosterminal/services/rest/1.0/infosterminal/${imei}`)).data
+  }
+
+  /**
+   * Description du terminal associé à un identifiant
+   * @param {string} id Identifiant
+   * @param {'BACARAT' | 'TAC'} type Type d'identifiant
+   * @returns {Promise<InfosTerminal>}
+   */
+  public static async getTerminalInfo (id: string, type: 'BACARAT' | 'TAC'): Promise<InfosTerminal> {
+    return (await axios.get(`https://selfcare-webservices.sfr.fr/webservices/infosterminal/services/rest/1.0/terminal/${id}`, {
+      params: { type }
+    })).data
+  }
+
+  /**
+   * Description des terminaux associés à leur identifiant
+   * @param {string[]} ids Identifiants
+   * @param {'BACARAT' | 'TAC'} type Type d'identifiant
+   * @returns {Promise<Array<InfosTerminal>>}
+   */
+  public static async getTerminauxInfo (ids: string[], type: 'BACARAT' | 'TAC'): Promise<InfosTerminal[]> {
+    return (await axios.get(`https://selfcare-webservices.sfr.fr/webservices/infosterminal/services/rest/1.0/terminaux/${ids.join(',')}`, {
+      params: { type }
     })).data
   }
 
@@ -163,6 +199,17 @@ export class SfrMobile {
       url: `https://espace-client.sfr.fr/webservices/infosclientfixe/services/rest/1.0/facture/${line}`,
       params: { idFact },
       responseType: 'stream'
+    })).data
+  }
+
+  /**
+   * Détails de la ligne fixe
+   * @param {string|undefined} line NDI de la ligne fixe
+   * @returns {Promise<InfosClientFixe>}
+   */
+  public async getInfosClientFixe (line?: string): Promise<InfosClientFixe> {
+    return (await this.instance({
+      url: `https://selfcare-webservices.sfr.fr/webservices/infosclientfixe/services/rest/1.0/${line ?? ''}`
     })).data
   }
 

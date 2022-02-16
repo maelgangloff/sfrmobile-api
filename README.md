@@ -15,6 +15,7 @@ Les identifiants utilisés sont les mêmes que pour se connecter sur le site de 
         * [.downloadFactureMobile(line, numeroFacture, fadet)](#SfrMobile+downloadFactureMobile) ⇒ <code>Promise.&lt;Stream&gt;</code>
         * [.getFacturationFixe(line, duration)](#SfrMobile+getFacturationFixe) ⇒ <code>Promise.&lt;FacturationFixe&gt;</code>
         * [.downloadFactureFixe(line, idFact)](#SfrMobile+downloadFactureFixe) ⇒ <code>Promise.&lt;Stream&gt;</code>
+        * [.getInfosClientFixe(line)](#SfrMobile+getInfosClientFixe) ⇒ <code>Promise.&lt;InfosClientFixe&gt;</code>
         * [.getFicheMonCompte()](#SfrMobile+getFicheMonCompte) ⇒ <code>Promise.&lt;FicheMonCompte&gt;</code>
         * [.getDashboard(line)](#SfrMobile+getDashboard) ⇒ <code>Promise.&lt;Dashboard&gt;</code>
         * [.getInfosPersonnelles(line)](#SfrMobile+getInfosPersonnelles) ⇒ <code>Promise.&lt;InfoPersonnelles&gt;</code>
@@ -34,6 +35,9 @@ Les identifiants utilisés sont les mêmes que pour se connecter sur le site de 
     * _static_
         * [.login(username, password, duration, universe)](#SfrMobile.login) ⇒ <code>Promise.&lt;LoginResponse&gt;</code>
         * [.verifyUsername(username, universe)](#SfrMobile.verifyUsername) ⇒ <code>Promise.&lt;VerifyUsernameResponse&gt;</code>
+        * [.getTerminalInfoIMEI(imei)](#SfrMobile.getTerminalInfoIMEI) ⇒ <code>Promise.&lt;InfosTerminalIMEI&gt;</code>
+        * [.getTerminalInfo(id, type)](#SfrMobile.getTerminalInfo) ⇒ <code>Promise.&lt;InfosTerminal&gt;</code>
+        * [.getTerminauxInfo(ids, type)](#SfrMobile.getTerminauxInfo) ⇒ <code>Promise.&lt;Array.&lt;InfosTerminal&gt;&gt;</code>
 
 <a name="new_SfrMobile_new"></a>
 
@@ -122,6 +126,17 @@ Télécharger la facture d'une ligne fixe
 | --- | --- | --- |
 | line | <code>string</code> | NDI de la ligne fixe |
 | idFact | <code>string</code> | Identifiant de la facture de la ligne fixe |
+
+<a name="SfrMobile+getInfosClientFixe"></a>
+
+### sfrMobile.getInfosClientFixe(line) ⇒ <code>Promise.&lt;InfosClientFixe&gt;</code>
+Détails de la ligne fixe
+
+**Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| line | <code>string</code> \| <code>undefined</code> | NDI de la ligne fixe |
 
 <a name="SfrMobile+getFicheMonCompte"></a>
 
@@ -325,4 +340,39 @@ Tester la validité d'un nom d'utilisateur
 | --- | --- | --- |
 | username | <code>string</code> | Nom d'utilisateur à tester |
 | universe | <code>Universe</code> | SFR/RED |
+
+<a name="SfrMobile.getTerminalInfoIMEI"></a>
+
+### SfrMobile.getTerminalInfoIMEI(imei) ⇒ <code>Promise.&lt;InfosTerminalIMEI&gt;</code>
+Description du terminal associé à un IMEI
+
+**Kind**: static method of [<code>SfrMobile</code>](#SfrMobile)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| imei | <code>string</code> | Identifiant du terminal mobile |
+
+<a name="SfrMobile.getTerminalInfo"></a>
+
+### SfrMobile.getTerminalInfo(id, type) ⇒ <code>Promise.&lt;InfosTerminal&gt;</code>
+Description du terminal associé à un identifiant
+
+**Kind**: static method of [<code>SfrMobile</code>](#SfrMobile)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | Identifiant |
+| type | <code>&#x27;BACARAT&#x27;</code> \| <code>&#x27;TAC&#x27;</code> | Type d'identifiant |
+
+<a name="SfrMobile.getTerminauxInfo"></a>
+
+### SfrMobile.getTerminauxInfo(ids, type) ⇒ <code>Promise.&lt;Array.&lt;InfosTerminal&gt;&gt;</code>
+Description des terminaux associés à leur identifiant
+
+**Kind**: static method of [<code>SfrMobile</code>](#SfrMobile)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ids | <code>Array.&lt;string&gt;</code> | Identifiants |
+| type | <code>&#x27;BACARAT&#x27;</code> \| <code>&#x27;TAC&#x27;</code> | Type d'identifiant |
 

@@ -53,7 +53,7 @@ paths:
         name: ids
         required: true
         schema:
-            type: string
+            type: array
     get:
       parameters:
         - in: query
@@ -72,12 +72,3 @@ paths:
       responses:
         '200':
           description: Successful Response
-components:
-  securitySchemes:
-    casauthenticationtoken:
-      type: apiKey
-      in: header
-      name: casauthenticationtoken
-      description: Jeton temporaire d'authentification
-security:
-  - casauthenticationtoken: []
