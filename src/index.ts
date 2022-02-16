@@ -141,20 +141,20 @@ export class SfrMobile {
 
   /**
  * Historique de facturation d'une ligne fixe
- * @param {string} line MSISDN de la ligne fixe
+ * @param {string} line NDI de la ligne fixe
  * @param {number} duration Nombre de périodes de facturation (6,12,18,24)
  * @returns {Promise<FacturationFixe>}
  */
   public async getFacturationFixe (line: string, duration: 6|12|18|24 = 6): Promise<FacturationFixe> {
     return (await this.instance({
-      url: `https://selfcare-webservices.sfr.fr/services/facture-fixe-md/consulterfactures/${line}`,
+      url: `https://selfcare-webservices.sfr.fr/facture-fixe-mid/services/rest/2.0/consulterfactures/${line}`,
       params: { duration }
     })).data
   }
 
   /**
    * Télécharger la facture d'une ligne fixe
-   * @param {string} line MSISDN de la ligne fixe
+   * @param {string} line NDI de la ligne fixe
    * @param {string} idFact Identifiant de la facture de la ligne fixe
    * @return {Promise<Stream>}
    */
@@ -361,7 +361,7 @@ export class SfrMobile {
  * @param line MSISDN de la ligne à sélectionner
  * @returns {Promise<OffreAmes>}
  */
-  public async getOffreAME (line: string): Promise<OffreAmes> {
+  public async getOffreAMES (line: string): Promise<OffreAmes> {
     return (await this.instance({
       url: 'https://www.sfr.fr/webservices/selfcare/offre-ws/rest/public/v41/ames',
       params: { ligne: line }

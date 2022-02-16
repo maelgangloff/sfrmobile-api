@@ -1,7 +1,8 @@
 <a name="SfrMobile"></a>
 
 ## SfrMobile
-Support non-officiel de l'API mobile de SFR/RED.Les identifiants utilisés sont les mêmes que pour se connecter sur le site de l'opérateur.
+Support non-officiel de l'API mobile de SFR/RED.
+Les identifiants utilisés sont les mêmes que pour se connecter sur le site de l'opérateur.
 
 **Kind**: global class  
 
@@ -29,7 +30,7 @@ Support non-officiel de l'API mobile de SFR/RED.Les identifiants utilisés sont
         * [.getPaiementTiersOptionsAchat(line)](#SfrMobile+getPaiementTiersOptionsAchat) ⇒ <code>Promise.&lt;OptionsAchat&gt;</code>
         * [.postPaiementTiersOptionsAchat(selectedLine, otp, data)](#SfrMobile+postPaiementTiersOptionsAchat)
         * [.getOTPSMS(line)](#SfrMobile+getOTPSMS) ⇒ <code>Promise.&lt;OTPSMSResponse&gt;</code>
-        * [.getOffreAME(line)](#SfrMobile+getOffreAME) ⇒ <code>Promise.&lt;OffreAmes&gt;</code>
+        * [.getOffreAMES(line)](#SfrMobile+getOffreAMES) ⇒ <code>Promise.&lt;OffreAmes&gt;</code>
     * _static_
         * [.login(username, password, duration, universe)](#SfrMobile.login) ⇒ <code>Promise.&lt;LoginResponse&gt;</code>
         * [.verifyUsername(username, universe)](#SfrMobile.verifyUsername) ⇒ <code>Promise.&lt;VerifyUsernameResponse&gt;</code>
@@ -43,7 +44,14 @@ Support non-officiel de l'API mobile de SFR/RED.Les identifiants utilisés sont
 | casauthenticationtoken | <code>string</code> | Jeton temporaire d'authentification |
 
 **Example**  
-```jsconst { SfrMobile } = require('sfrmobile-api')SfrMobile.login(username, password).then(({ token }) => {   const user = new SfrMobile(token)   // Votre code})```
+```js
+const { SfrMobile } = require('sfrmobile-api')
+
+SfrMobile.login(username, password).then(({ token }) => {
+   const user = new SfrMobile(token)
+   // Votre code
+})
+```
 <a name="SfrMobile+getConso"></a>
 
 ### sfrMobile.getConso(line) ⇒ <code>Promise.&lt;Consumption&gt;</code>
@@ -100,7 +108,7 @@ Historique de facturation d'une ligne fixe
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| line | <code>string</code> |  | MSISDN de la ligne fixe |
+| line | <code>string</code> |  | NDI de la ligne fixe |
 | duration | <code>number</code> | <code>6</code> | Nombre de périodes de facturation (6,12,18,24) |
 
 <a name="SfrMobile+downloadFactureFixe"></a>
@@ -112,7 +120,7 @@ Télécharger la facture d'une ligne fixe
 
 | Param | Type | Description |
 | --- | --- | --- |
-| line | <code>string</code> | MSISDN de la ligne fixe |
+| line | <code>string</code> | NDI de la ligne fixe |
 | idFact | <code>string</code> | Identifiant de la facture de la ligne fixe |
 
 <a name="SfrMobile+getFicheMonCompte"></a>
@@ -281,9 +289,9 @@ Obtenir un code à usage unique pour effectuer une opération
 | --- | --- |
 | line | MSISDN de la ligne à sélectionner |
 
-<a name="SfrMobile+getOffreAME"></a>
+<a name="SfrMobile+getOffreAMES"></a>
 
-### sfrMobile.getOffreAME(line) ⇒ <code>Promise.&lt;OffreAmes&gt;</code>
+### sfrMobile.getOffreAMES(line) ⇒ <code>Promise.&lt;OffreAmes&gt;</code>
 Informations sur les remises Multi-Pack
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  

@@ -1,0 +1,83 @@
+openapi: 3.0.0
+info:
+  title: API infosterminal SFR
+  version: '1.0'
+servers:
+  - url: https://selfcare-webservices.sfr.fr/webservices/infosterminal/services/rest/1.0
+paths:
+  '/infosterminal/{imei}':
+    parameters:
+      - in: path
+        name: imei
+        required: true
+        schema:
+          type: string
+    get:
+      parameters:
+        - in: query
+          name: callback
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Response
+  '/terminal/{id}':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+            type: string
+    get:
+      parameters:
+        - in: query
+          name: type
+          required: false
+          schema:
+            type: string
+            enum:
+              - BACARAT
+              - TAC
+        - in: query
+          name: callback
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Response
+  '/terminaux/{ids}':
+    parameters:
+      - in: path
+        name: ids
+        required: true
+        schema:
+            type: string
+    get:
+      parameters:
+        - in: query
+          name: type
+          required: false
+          schema:
+            type: string
+            enum:
+              - BACARAT
+              - TAC
+        - in: query
+          name: callback
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Response
+components:
+  securitySchemes:
+    casauthenticationtoken:
+      type: apiKey
+      in: header
+      name: casauthenticationtoken
+      description: Jeton temporaire d'authentification
+security:
+  - casauthenticationtoken: []
