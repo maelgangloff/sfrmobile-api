@@ -1,0 +1,762 @@
+openapi: 3.0.3
+info:
+  title: API SFR mobile
+  description: Tentative de définition de l'API mobile SFR
+  version: 1.0.0
+tags:
+  - name: Authentification
+  - name: Mon compte
+  - name: Ligne
+  - name: Terminal
+  - name: Options
+paths:
+  /cas/services/rest/3.2/createToken.json:
+    servers:
+      - url: https://www.sfr.fr
+    parameters:
+      - in: query
+        name: duration
+        required: true
+        description: Durée de validité du jeton en secondes (86400s=24h)
+        schema:
+          type: integer
+          example: 86400
+      - in: header
+        name: secret
+        required: true
+        description: Authentification de l'API (SFRETMoiAndroidV1/windows1980)
+        schema:
+          type: string
+          example: Basic U0ZSRVRNb2lBbmRyb2lkVjE6d2luZG93czE5ODA=
+    get:
+      operationId: Demander un jeton temporaire de connexion
+      tags: [ Authentification ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createTokenResponse'
+      security:
+        - login: [ ]
+  /securite-compte-mid/login/smartphones/2.0/verification/{username}:
+    servers:
+      - url: https://selfcare-webservices.sfr.fr
+    parameters:
+      - in: path
+        name: username
+        description: Nom d'utilisateur à tester
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: Authorization
+        required: true
+        description: Authentification de l'API (SFRETMoiAndroidV1/windows1980)
+        schema:
+          type: string
+          example: Basic U0ZSRVRNb2lBbmRyb2lkVjE6d2luZG93czE5ODA=
+    get:
+      operationId: Vérifier l'existence d'un compte
+      tags: [ Authentification ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+  /webservices/infosterminal/services/rest/1.0/infosterminal/{IMEI}:
+    servers:
+      - url: https://selfcare-webservices.sfr.fr
+    parameters:
+      - in: path
+        name: IMEI
+        required: true
+        description: Identifiant unique du terminal
+        schema:
+          type: string
+    get:
+      description: Informations sur un terminal portant un IMEI
+      tags: [ Terminal ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+  /webservices/infosterminal/services/rest/1.0/terminal/{id}:
+    servers:
+      - url: https://selfcare-webservices.sfr.fr
+    parameters:
+      - in: query
+        name: type
+        required: true
+        description: Type d'identifiant
+        schema:
+          enum:
+            - BACARAT
+            - TAC
+      - in: path
+        name: id
+        description: Identifiant TAC ou BACARAT
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: Informations sur un terminal
+      tags: [ Terminal ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+  /webservices/infosterminal/services/rest/1.0/terminaux/{ids}:
+    servers:
+      - url: https://selfcare-webservices.sfr.fr
+    parameters:
+      - in: query
+        name: type
+        required: true
+        schema:
+          enum:
+            - BACARAT
+            - TAC
+      - in: path
+        name: ids
+        required: true
+        description: Identifiants TAC ou BACARAT
+        schema:
+          type: array
+          items:
+            type: string
+    get:
+      operationId: Informations sur plusieurs terminaux
+      tags: [ Terminal ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+  /infoconso-mobile-mid/rest/smartphones/4.0/conso/{MSISDN}:
+    servers:
+      - url: https://selfcare-webservices.sfr.fr
+    parameters:
+      - in: path
+        name: MSISDN
+        required: true
+        description: Numéro de la ligne mobile
+        schema:
+          type: string
+    get:
+      operationId: Consommation générale d'une ligne
+      tags: [ Ligne ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+  /infoconso-mobile-mid/rest/smartphones/4.0/historique/nationale/{MSISDN}:
+    servers:
+      - url: https://selfcare-webservices.sfr.fr
+    parameters:
+      - in: path
+        name: MSISDN
+        required: true
+        description: Numéro de la ligne mobile
+        schema:
+          type: string
+    get:
+      operationId: Consommation d'une ligne sur le territoire national
+      tags: [ Ligne ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+  /facture-mobile-ws/consultation/smartphones/2.5/{MSISDN}:
+    servers:
+      - url: https://selfcare-webservices.sfr.fr
+    parameters:
+      - in: path
+        name: MSISDN
+        required: true
+        description: Numéro de la ligne mobile
+        schema:
+          type: string
+      - in: query
+        name: duration
+        required: true
+        schema:
+          enum: [ 6, 12, 18, 24 ]
+        description: Nombre de mois de facturation
+    get:
+      operationId: Facturation de la ligne mobile
+      tags: [ Ligne ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+  /facture-mobile-ws/consultation/smartphones/2.5/{MSISDN}/{facture}:
+    servers:
+      - url: https://selfcare-webservices.sfr.fr
+    parameters:
+      - in: path
+        name: MSISDN
+        required: true
+        description: Numéro de la ligne mobile
+        schema:
+          type: string
+      - in: path
+        name: facture
+        required: true
+        description: sfr-facture-{numeroFacture}.pdf ou sfr-facture-detail-{numeroFacture}.pdf
+        schema:
+          type: string
+    get:
+      operationId: Facture PDF de la ligne mobile
+      tags: [ Ligne ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+      security:
+        - token: [ ]
+  /facture-fixe-mid/services/rest/2.0/consulterfactures/{NDI}:
+    servers:
+      - url: https://selfcare-webservices.sfr.fr
+    parameters:
+      - in: path
+        name: NDI
+        required: true
+        description: Numéro de la ligne fixe
+        schema:
+          type: string
+      - in: query
+        name: duration
+        required: true
+        schema:
+          enum: [ 6, 12, 18, 24 ]
+        description: Nombre de mois de facturation
+    get:
+      operationId: Facturation de la ligne fixe
+      tags: [ Ligne ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+  /webservices/infosclientfixe/services/rest/1.0/facture/{NDI}:
+    servers:
+      - url: https://espace-client.sfr.fr
+    parameters:
+      - in: path
+        name: NDI
+        required: true
+        description: Numéro de la ligne fixe
+        schema:
+          type: string
+      - in: query
+        name: idFact
+        required: true
+        description: Identifiant de la facture
+        schema:
+          type: string
+    get:
+      operationId: Facture PDF de la ligne fixe
+      tags: [ Ligne ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+      security:
+        - token: [ ]
+  /webservices/infosclientfixe/services/rest/1.0/infosclientfixe/{NDI}:
+    servers:
+      - url: https://selfcare-webservices.sfr.fr
+    parameters:
+      - in: path
+        name: NDI
+        required: true
+        description: Numéro de la ligne fixe
+        schema:
+          type: string
+    get:
+      operationId: Informations sur la ligne fixe
+      tags: [ Ligne ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+  /webservices/infosclientfixe/services/rest/1.0/infosclientfixe:
+    servers:
+      - url: https://selfcare-webservices.sfr.fr
+    get:
+      operationId: Informations sur une ligne fixe
+      tags: [ Ligne ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+
+  /webservices/userprofile/rest/moncompte/{timestamp}:
+    servers:
+      - url: https://www.sfr.fr
+    parameters:
+      - in: path
+        required: true
+        name: timestamp
+        description: Timestamp
+        example: 0
+        schema:
+          type: integer
+    get:
+      operationId: Fiche mon compte
+      tags: [ Mon compte ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+
+  /dashboard-mid/rest/smartphones/2.0/dashboard/{line}:
+    servers:
+      - url: https://selfcare-webservices.sfr.fr
+    parameters:
+      - in: path
+        required: true
+        name: line
+        description: MSISDN ou NDI
+        schema:
+          type: string
+    get:
+      operationId: Tableau de bord de l'abonnement et de la consommation en cours
+      tags: [ Mon compte ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+
+  /services-admin/infopersonnelles/services/rest/2.0/{line}:
+    servers:
+      - url: https://espace-client.sfr.fr
+    parameters:
+      - in: path
+        required: true
+        name: line
+        description: MSISDN ou NDI
+        schema:
+          type: string
+    get:
+      operationId: Informations personnelles
+      tags: [ Mon compte ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+
+  /espace-client-mid/notification/1.0/count:
+    servers:
+      - url: https://espace-client.sfr.fr
+    parameters:
+      - in: query
+        required: true
+        name: platform
+        example: smartphones
+        schema:
+          type: string
+    get:
+      operationId: Nombre de notifications pour chaque ligne
+      tags: [ Mon compte ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+
+  /espace-client-mid/notification/1.0:
+    servers:
+      - url: https://espace-client.sfr.fr
+    parameters:
+      - in: query
+        name: platform
+        example: smartphones
+        schema:
+          type: string
+    get:
+      operationId: Notifications pour chaque ligne
+      tags: [ Mon compte ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+
+  /webservices/parc/v1/APPLI_MOBILE/equipement:
+    servers:
+      - url: https://www.sfr.fr
+    parameters:
+      - in: query
+        name: line
+        description: MSISDN ou NDI
+        schema:
+          type: string
+    get:
+      operationId: Equipement mis à disposition
+      tags: [ Ligne ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+
+  /webservices/parc/v1/APPLI_MOBILE/option/{option}:
+    servers:
+      - url: https://www.sfr.fr
+    parameters:
+      - in: path
+        required: true
+        name: option
+        description: Option
+        schema:
+          type: string
+    get:
+      operationId: Informations sur une option
+      tags: [ Options ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+
+  /webservices/options/v1/APPLI_MOBILE/catalog:
+    servers:
+      - url: https://www.sfr.fr
+    parameters:
+      - in: query
+        name: line
+        description: MSISDN ou NDI
+        schema:
+          type: string
+    get:
+      operationId: Catalogue des catégories d'option
+      tags: [ Options ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+  /webservices/options/v1/APPLI_MOBILE/catalog/details:
+    servers:
+      - url: https://www.sfr.fr
+    parameters:
+      - in: query
+        name: line
+        description: MSISDN ou NDI
+        schema:
+          type: string
+    get:
+      operationId: Catalogue détaillé des catégories
+      tags: [ Options ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+
+  /webservices/options/v1/APPLI_MOBILE/category/{category}:
+    servers:
+      - url: https://www.sfr.fr
+    parameters:
+      - in: query
+        name: line
+        description: MSISDN ou NDI
+        schema:
+          type: string
+      - in: path
+        required: true
+        name: category
+        description: Catégorie
+        schema:
+          type: string
+    get:
+      operationId: Lister les options d'une catégorie
+      tags: [ Options ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+
+  /webservices/options/v1/APPLI_MOBILE/equipement/{option}:
+    servers:
+      - url: https://www.sfr.fr
+    parameters:
+      - in: query
+        name: line
+        description: MSISDN ou NDI
+        schema:
+          type: string
+      - in: path
+        required: true
+        name: option
+        description: Option d'équipement
+        schema:
+          type: string
+    get:
+      operationId: Détail de l'option d'équipement
+      tags: [ Options ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+
+  /webservices/parc/v1/APPLI_MOBILE/parc:
+    servers:
+      - url: https://www.sfr.fr
+    parameters:
+      - in: query
+        name: line
+        description: MSISDN ou NDI
+        schema:
+          type: string
+      - in: query
+        name: environment
+        example: MOBILE
+        schema:
+          type: string
+      - in: query
+        name: universe
+        description: SFR ou RED
+        example: SFR
+        schema:
+          type: string
+    get:
+      operationId: Informations sur l'offre d'une ligne
+      tags: [ Ligne ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+
+  /webservices/paiement-tiers/services/rest/smartphones/2.0/achats-abonnements/consulterV2/{line}:
+    servers:
+      - url: https://selfcare-webservices.sfr.fr
+    parameters:
+      - in: path
+        required: true
+        name: line
+        description: MSISDN ou NDI
+        schema:
+          type: string
+    get:
+      operationId: Historique des achats et abonnements d'une ligne
+      tags: [ Ligne ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+
+  /webservices/paiement-tiers/services/rest/smartphones/2.0/options-achat/consultation/{line}:
+    servers:
+      - url: https://selfcare-webservices.sfr.fr
+    parameters:
+      - in: path
+        required: true
+        name: line
+        description: MSISDN ou NDI
+        schema:
+          type: string
+    get:
+      operationId: Détail des options d'achat d'une ligne
+      tags: [ Ligne ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+
+  /webservices/paiement-tiers/services/rest/smartphones/2.0/options-achat/modification:
+    servers:
+      - url: https://selfcare-webservices.sfr.fr
+    parameters:
+      - in: query
+        name: selectedLine
+        description: MSISDN ou NDI
+        schema:
+          type: string
+      - in: query
+        name: platform
+        example: smartphones
+        schema:
+          type: string
+      - in: query
+        name: typeActe
+        example: optionsAchats
+        schema:
+          type: string
+      - in: header
+        name: code
+        description: Code OTP de double authentification
+        schema:
+          type: integer
+    post:
+      operationId: Modifier les options d'achat d'une ligne
+      tags: [ Ligne ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/optionsAchatRequestBody'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+
+  /services-securite/rest/1.0/checkUrl/{line}:
+    servers:
+      - url: https://espace-client.sfr.fr
+    parameters:
+      - in: path
+        required: true
+        name: line
+        description: MSISDN ou NDI
+        schema:
+          type: string
+    get:
+      operationId: Envoyer un code OTP par SMS pour effectuer une opération importante
+      tags: [ Ligne ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+
+  /webservices/selfcare/offre-ws/rest/public/v41/ames:
+    servers:
+      - url: https://www.sfr.fr
+    parameters:
+      - in: query
+        required: true
+        name: ligne
+        description: MSISDN ou NDI
+        schema:
+          type: string
+    get:
+      operationId: Informations sur les remises (Multi-pack)
+      tags: [ Ligne ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+      security:
+        - token: [ ]
+
+components:
+  schemas:
+    createTokenResponse:
+      type: object
+      properties:
+        createToken:
+          type: object
+          properties:
+            token:
+              type: string
+    optionsAchatRequestBody:
+      type: object
+      properties:
+        plafondAchat:
+          type: object
+          properties:
+            credit:
+              type: number
+            min:
+              type: number
+            max:
+              type: number
+            defaut:
+              type: number
+        droitsAchat:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              titre:
+                type: string
+              description:
+                type: string
+              autorise:
+                type: boolean
+  securitySchemes:
+    login:
+      type: http
+      scheme: basic
+    token:
+      type: apiKey
+      in: header
+      name: casauthenticationtoken
+      description: Jeton d'authentification

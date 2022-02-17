@@ -196,7 +196,7 @@ export class SfrMobile {
    */
   public async downloadFactureFixe (line: string, idFact: string): Promise<Stream> {
     return (await this.instance({
-      url: `https://selfcare-webservices.sfr.fr/webservices/infosclientfixe/services/rest/1.0/facture/${line}`,
+      url: `https://espace-client.sfr.fr/webservices/infosclientfixe/services/rest/1.0/facture/${line}`,
       params: { idFact },
       responseType: 'stream'
     })).data
