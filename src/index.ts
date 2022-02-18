@@ -85,7 +85,7 @@ export class SfrMobile {
    * Tester la validité d'un nom d'utilisateur
    * @param {string} username Nom d'utilisateur à tester
    * @param {Universe?} universe SFR/RED
-   * @returns {Promise<VerifyUsernameResponse>}
+   * @return {Promise<VerifyUsernameResponse>}
    * @static
    */
   public static async verifyUsername (username: string, universe: Universe = Universe.SFR): Promise<VerifyUsernameResponse> {
@@ -97,7 +97,7 @@ export class SfrMobile {
   /**
    * Description du terminal associé à un IMEI
    * @param {string} imei Identifiant du terminal mobile
-   * @returns {Promise<InfosTerminalIMEI>}
+   * @return {Promise<InfosTerminalIMEI>}
    */
   public static async getTerminalInfoIMEI (imei: string): Promise<InfosTerminalIMEI> {
     return (await axios.get(`https://selfcare-webservices.sfr.fr/webservices/infosterminal/services/rest/1.0/infosterminal/${imei}`)).data
@@ -107,7 +107,7 @@ export class SfrMobile {
    * Description du terminal associé à un identifiant
    * @param {string} id Identifiant
    * @param {'BACARAT' | 'TAC'} type Type d'identifiant
-   * @returns {Promise<InfosTerminal>}
+   * @return {Promise<InfosTerminal>}
    */
   public static async getTerminalInfo (id: string, type: 'BACARAT' | 'TAC'): Promise<InfosTerminal> {
     return (await axios.get(`https://selfcare-webservices.sfr.fr/webservices/infosterminal/services/rest/1.0/terminal/${id}`, {
@@ -119,7 +119,7 @@ export class SfrMobile {
    * Description des terminaux associés à leur identifiant
    * @param {string[]} ids Identifiants
    * @param {'BACARAT' | 'TAC'} type Type d'identifiant
-   * @returns {Promise<Array<InfosTerminal>>}
+   * @return {Promise<InfosTerminal[]>}
    */
   public static async getTerminauxInfo (ids: string[], type: 'BACARAT' | 'TAC'): Promise<InfosTerminal[]> {
     return (await axios.get(`https://selfcare-webservices.sfr.fr/webservices/infosterminal/services/rest/1.0/terminaux/${ids.join(',')}`, {
@@ -141,6 +141,7 @@ export class SfrMobile {
   /**
    * Historique de la consommation sur le territoire national
    * @param line MSISDN de la ligne à sélectionner
+   * @return {Promise<ConsumptionNationale>}
    */
   public async getConsoNationale (line: string): Promise<ConsumptionNationale> {
     return (await this.instance({
@@ -179,7 +180,7 @@ export class SfrMobile {
  * Historique de facturation d'une ligne fixe
  * @param {string} line NDI de la ligne fixe
  * @param {number} duration Nombre de périodes de facturation (6,12,18,24)
- * @returns {Promise<FacturationFixe>}
+ * @return {Promise<FacturationFixe>}
  */
   public async getFacturationFixe (line: string, duration: 6|12|18|24 = 6): Promise<FacturationFixe> {
     return (await this.instance({
@@ -205,7 +206,7 @@ export class SfrMobile {
   /**
    * Détails de la ligne fixe
    * @param {string|undefined} line NDI de la ligne fixe
-   * @returns {Promise<InfosClientFixe>}
+   * @return {Promise<InfosClientFixe>}
    */
   public async getInfosClientFixe (line?: string): Promise<InfosClientFixe> {
     return (await this.instance({
@@ -417,7 +418,7 @@ export class SfrMobile {
   /**
  * Informations sur les remises Multi-Pack
  * @param line MSISDN de la ligne à sélectionner
- * @returns {Promise<OffreAmes>}
+ * @return {Promise<OffreAmes>}
  */
   public async getOffreAMES (line: string): Promise<OffreAmes> {
     return (await this.instance({

@@ -10,7 +10,7 @@ Les identifiants utilisés sont les mêmes que pour se connecter sur le site de 
     * [new SfrMobile(casauthenticationtoken)](#new_SfrMobile_new)
     * _instance_
         * [.getConso(line)](#SfrMobile+getConso) ⇒ <code>Promise.&lt;Consumption&gt;</code>
-        * [.getConsoNationale(line)](#SfrMobile+getConsoNationale)
+        * [.getConsoNationale(line)](#SfrMobile+getConsoNationale) ⇒ <code>Promise.&lt;ConsumptionNationale&gt;</code>
         * [.getFacturationMobile(line, duration)](#SfrMobile+getFacturationMobile) ⇒ <code>Promise.&lt;Facturation&gt;</code>
         * [.downloadFactureMobile(line, numeroFacture, fadet)](#SfrMobile+downloadFactureMobile) ⇒ <code>Promise.&lt;Stream&gt;</code>
         * [.getFacturationFixe(line, duration)](#SfrMobile+getFacturationFixe) ⇒ <code>Promise.&lt;FacturationFixe&gt;</code>
@@ -70,7 +70,7 @@ Consommation générale de la ligne
 
 <a name="SfrMobile+getConsoNationale"></a>
 
-### sfrMobile.getConsoNationale(line)
+### sfrMobile.getConsoNationale(line) ⇒ <code>Promise.&lt;ConsumptionNationale&gt;</code>
 Historique de la consommation sur le territoire national
 
 **Kind**: instance method of [<code>SfrMobile</code>](#SfrMobile)  

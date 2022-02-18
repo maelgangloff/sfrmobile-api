@@ -6,7 +6,7 @@ export interface Parc {
   migUrl: string
   aroUrl: string
   type: string
-  eliTv: null
+  eliTv: boolean | null
   offer: {
     name: string
     commitmentDate: string
@@ -32,10 +32,10 @@ export interface Parc {
       commitmentWarning: null
       activationUrl: null
       activationStatus: string
-      status: string
+      status: string | null
       beginDate: string
       endDate: string
-      cancellationUrl: string
+      cancellationUrl: string | null
       dateFinGel: null
       modifiable: boolean
       cancellable: boolean

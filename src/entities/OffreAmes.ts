@@ -19,7 +19,7 @@ export interface OffreAmes {
       nom: string
       prenom: string
       civilite: string
-      updateDate: Date
+      updateDate: string
       memberCharacteristic: {
         memberCharacteristics: Array<{
           csuID: string
@@ -31,13 +31,13 @@ export interface OffreAmes {
           prenom: string
           civilite: string
           lineID: string
-          updateDate: Date
+          updateDate: string
           libellePTA: string
           ptaCode: string
           currentDataToShare?: number
           ptaEligibility?: string
           lineType?: string
-          sharedDataNextDate: Date
+          sharedDataNextDate: string
           cutOffDay: number
           benefitCharacteristic: {
             benefitCharacteristics: Array<{
@@ -45,8 +45,8 @@ export interface OffreAmes {
               benefitShortName: string
               benefitDescription: string
               status: string
-              activationDate: Date
-              endDate: Date
+              activationDate: string
+              endDate: string
               benefitValueMinPerMonth: string
               benefitValueMaxPerMonth: string
               benefitValueMinPerYear: string
@@ -62,7 +62,7 @@ export interface OffreAmes {
               sheId: string
               type: string
               status: string
-              actDate: Date
+              actDate: string
               sharedData?: number
             }>
           }

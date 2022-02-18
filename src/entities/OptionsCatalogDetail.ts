@@ -19,7 +19,7 @@ export interface OptionsCatalogDetail {
         frequency: 'ONCE' | 'RECURRENT' | string
         logoUrl: null | string
         needsConsent: boolean
-        picUrl: string
+        picUrl: string | null
         materialImpacts: boolean
         migCachee: boolean
         pushForward?: boolean

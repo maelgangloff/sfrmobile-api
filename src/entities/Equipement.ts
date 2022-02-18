@@ -9,6 +9,6 @@ export interface EquipementDetail {
 
 export interface Equipement {
   idResponse: string
-  equipements: EquipementDetail[]
+  equipments: EquipementDetail[]
   pushOptions: []
 }

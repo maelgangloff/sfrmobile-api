@@ -1,6 +1,15 @@
 export interface Facturation {
   factures: Array<{
     dateFacture: string
+    infoPaiement: {
+      montantTotal: string
+      datePaiement: string
+      numero: string
+      numeroSAP: string
+      documentType: string
+      paiementEnRetard: boolean
+      payee: boolean
+    }
     sommaire: {
       montantTotal: string
       valeurFacture: string

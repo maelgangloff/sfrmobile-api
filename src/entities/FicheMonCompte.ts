@@ -65,8 +65,8 @@ export interface FicheMonCompte {
     }>
     profilPSW: string
     segment: string
-    statutJoya: null
-    telephoneMobileIdBacarat: null
+    statutJoya: string | null
+    telephoneMobileIdBacarat: string | null
     telephoneMobileImei: string
     telephoneMobileTac: string
     utilisateurData: {
